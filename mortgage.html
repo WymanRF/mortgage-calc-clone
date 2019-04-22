@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Online Mortgage Calculator!</title>
+    <link rel="shortcut icon" type="image/png" href="wyncode-icon.jpg">
+    <link 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    rel="stylesheet" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+    crossorigin="anonymous">
+    <style>
+      body{
+        text-align: center;
+        background-image: url(https://picsum.photos/id/1040/3000/2000);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+      }
+      .hidden{
+        visibility: hidden;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>Online Mortgage Calculator!</h1>
+    <form>
+      <div>
+        <label for='principal'>Principal
+          $ <input id='principal' type='number' min='0' value='0'>
+      </div>
+      <div>
+        <label for='rate'>Rate
+        <input step='0.001' id='rate' type='number' min='0' value='0'> %
+      </div>
+      <div>
+          <label for='term'>Term
+          <select id='term' type='select' min='0' value='0'> 
+          <option value='15'>15 year fixed</option>
+          <option value='30'>30 year fixed</option>
+          </select>
+        </div>
+        <button class='btn btn-danger' type='submit'>Calculate
+          </button>
+    </form>
+    <div id="answer" class="hidden">
+      <h2 class='ans'>lol</h2>
+    </div>
+    <script>
+            const form = document.querySelector('form')
+            const princ = document.querySelector('#principal')
+            const rate = document.querySelector('#rate')
+            const years = document.querySelector('#term')
+            const answer = document.querySelector('#answer')
+
+            function sumbitData(event){
+                event.preventDefault()
+                  const mnthlyPayment = calculateMonthlyPayment(Number(princ.value), Number(rate.value), Number(years.value))
+                  answer.textContent = `Monthly Payment: $${mnthlyPayment.toFixed(2)}`
+                  answer.classList.toggle('hidden')  
+            }
+
+      function calculateMonthlyPayment(principal, annualRate, numberOfYears){      
+        const monthlyRate = annualRate / 12 / 100
+        const numberOfPayments = numberOfYears * 12
+        const numerator = monthlyRate * (1 + monthlyRate) ** numberOfPayments
+        const denominator = (1 + monthlyRate) ** numberOfPayments - 1
+        return principal * (numerator / denominator)
+      }
+
+      form.addEventListener('submit', sumbitData)
+    </script>
+  </body>
+</html>
